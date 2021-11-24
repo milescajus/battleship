@@ -76,12 +76,6 @@ Coordinates* find_ships(bool **board, const int width, const int height, const i
 
     std::cout << to_string(guesses) + " guesses needed" << std::endl;
 
-    for (int i = 0; i < ship_count; i++) {
-        std::cout << c[i].x;
-        std::cout << ":";
-        std::cout << c[i].y << std::endl;
-    }
-
     return c;
 }
 
