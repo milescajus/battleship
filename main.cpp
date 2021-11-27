@@ -6,7 +6,7 @@ int main() {
     srand(time(NULL));
     int height = 6;
     int width = 6;
-    int ships = 12;
+    int ships = 4;
 
     bool **board = create_board(height, width);
 

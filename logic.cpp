@@ -117,10 +117,10 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
             std::vector<Coordinates> adj = adjacent(g, height, width);
 
             for (int i = 0; i < adj.size(); i++) {
-                if (!contains(visited, adj[i])) {
-                    return r_guess(board, adj[i], height, width, found, count, visited);
-                } else {
+                if (contains(visited, adj[i])) { continue; }
+                else {
                     visited.push_back(adj[i]);     // add current location to places seen
+                    return r_guess(board, adj[i], height, width, found, count, visited);
                 }
             }
 
