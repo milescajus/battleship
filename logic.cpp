@@ -49,22 +49,22 @@ void place_ships(bool **board, const int shipcount, const int width,
 std::vector<Coordinates> adjacent(const Coordinates c,
                                   const int height, const int width)
 {
+    // initialize vector with all possible adjacents (including non-valid)
     std::vector<Coordinates> adj = {{c.x - 1, c.y}, {c.x - 1, c.y + 1}, {c.x - 1, c.y - 1},
                                     {c.x, c.y - 1}, {c.x, c.y + 1},
                                     {c.x + 1, c.y}, {c.x + 1, c.y + 1}, {c.x + 1, c.y - 1}};
 
-    std::vector<Coordinates> adj_trim;
+    std::vector<Coordinates> adj_trim;  // will contain only valid adjacent coords
 
     for (int i = 0; i < adj.size(); i++) {
+        // skip coord if out of bounds, else add to adj_trim
+
         if (adj[i].x < 0 || adj[i].x > width - 1 || adj[i].y < 0 || adj[i].y > height - 1) {
-            // std::cout << "skipped " << adj[i].x << ":" << adj[i].y << std::endl;
             continue;
         } else {
             adj_trim.push_back(adj[i]);
         }
     }
-
-    // std::cout << adj_trim.size() << " adjacent to " << c.x << ":" << c.y << std::endl;
 
     return adj_trim;
 }
@@ -73,8 +73,11 @@ ResponseType guess(bool **board, const Coordinates c, const int height, const in
 {
     if (board[c.x][c.y]) {
         std::cout << "HIT AT (" << c.x << "," << c.y <<  ")";
+
         return ResponseType::HIT;
     } else {
+        // find adjacents, if they contain a ship it's a near miss, else just a miss
+
         std::vector<Coordinates> adj = adjacent(c, height, width);
 
         for (auto it = adj.begin(); it != adj.end(); ++it) {
@@ -91,6 +94,8 @@ ResponseType guess(bool **board, const Coordinates c, const int height, const in
 
 bool contains(std::vector<Coordinates> c_list, Coordinates c)
 {
+    // helper function to check if coord is in vector of coords
+
     for (int i = 0; i < c_list.size(); i++) {
         if (c == c_list[i]) {
             return true;
@@ -104,6 +109,8 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
              Coordinates* &found, int &count, std::vector<Coordinates> &visited,
              int &guesses)
 {
+    // recursive guessing function
+
     std::cout << '\t';
     guesses++;
 
@@ -114,12 +121,13 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
             count++;
             break;
         case ResponseType::MISS:
-            break;
-        case ResponseType::NEAR_MISS:   // recursively check adjacent squares
+            break;                      // move along, nothing to see here
+        case ResponseType::NEAR_MISS:
+            // recursively check adjacent squares
             std::vector<Coordinates> adj = adjacent(g, height, width);
 
             for (int i = 0; i < adj.size(); i++) {
-                if (contains(visited, adj[i])) { continue; }
+                if (contains(visited, adj[i])) { continue; } // skip visited coords -- prevents loops
                 else {
                     visited.push_back(adj[i]);     // add current location to places seen
                     return r_guess(board, adj[i], height, width, found, count, visited, guesses);
@@ -136,19 +144,21 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
 
 Coordinates* find_ships(bool **board, const int width, const int height, const int ships)
 {
-    std::vector<Coordinates> visited;
+    // TODO: FIX MEMORY LEAK IN THIS FUNCTION
+
+    std::vector<Coordinates> visited;   // keeps track of visited coords
     Coordinates *found = (Coordinates *)malloc(sizeof(Coordinates) * ships);
 
     int count = 0;
     int guesses = 0;
 
     while(count < ships) {
-        Coordinates g = {rand() % height, rand() % width};
+        Coordinates g = {rand() % height, rand() % width};      // start with random coords
 
-        if (contains(visited, g)) { continue; }
-        else { visited.push_back(g); }
+        if (contains(visited, g)) { continue; }                 // re-roll if visited (doesn't count as guess)
+        else { visited.push_back(g); }                          // add coords to visited list
 
-        r_guess(board, g, height, width, found, count, visited, guesses);
+        r_guess(board, g, height, width, found, count, visited, guesses);       // recursively guess for ships
         std::cout << std::endl;
     }
 
