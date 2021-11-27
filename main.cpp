@@ -14,9 +14,9 @@ int main() {
     print_board(board, height, width);
     Coordinates* c = find_ships(board, height, width, ships);
 
-    std::cout << std::endl;
+    std::cout << "\nSHIPS AT:" << std::endl;
     for (int i = 0; i < ships; i++) {
-        std::cout << c[i].x << ":" << c[i].y << std::endl;
+        std::cout << "(" << c[i].x << "," << c[i].y << ")" << std::endl;
     }
 
     destroy_board(board, height);

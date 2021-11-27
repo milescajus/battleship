@@ -104,7 +104,7 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
              Coordinates* &found, int &count, std::vector<Coordinates> &visited,
              int &guesses)
 {
-    std::cout << "\t";
+    std::cout << '\t';
     guesses++;
 
     switch(guess(board, g, height, width)) {
@@ -136,11 +136,11 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
 
 Coordinates* find_ships(bool **board, const int width, const int height, const int ships)
 {
+    std::vector<Coordinates> visited;
     Coordinates *found = (Coordinates *)malloc(sizeof(Coordinates) * ships);
-    // Coordinates c[ship_count];
+
     int count = 0;
     int guesses = 0;
-    std::vector<Coordinates> visited;
 
     while(count < ships) {
         Coordinates g = {rand() % height, rand() % width};
