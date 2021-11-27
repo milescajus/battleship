@@ -56,7 +56,7 @@ std::vector<Coordinates> adjacent(const Coordinates c,
 
     std::vector<Coordinates> adj_trim;  // will contain only valid adjacent coords
 
-    for (int i = 0; i < adj.size(); i++) {
+    for (size_t i = 0; i < adj.size(); i++) {
         // skip coord if out of bounds, else add to adj_trim
 
         if (adj[i].x < 0 || adj[i].x > width - 1 || adj[i].y < 0 || adj[i].y > height - 1) {
@@ -96,7 +96,7 @@ bool contains(std::vector<Coordinates> c_list, Coordinates c)
 {
     // helper function to check if coord is in vector of coords
 
-    for (int i = 0; i < c_list.size(); i++) {
+    for (size_t i = 0; i < c_list.size(); i++) {
         if (c == c_list[i]) {
             return true;
         }
@@ -126,7 +126,7 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
             // recursively check adjacent squares
             std::vector<Coordinates> adj = adjacent(g, height, width);
 
-            for (int i = 0; i < adj.size(); i++) {
+            for (size_t i = 0; i < adj.size(); i++) {
                 if (contains(visited, adj[i])) { continue; } // skip visited coords -- prevents loops
                 else {
                     visited.push_back(adj[i]);     // add current location to places seen
@@ -142,7 +142,7 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
     return;
 }
 
-Coordinates* find_ships(bool **board, const int width, const int height, const int ships)
+Coordinates *find_ships(bool **board, const int width, const int height, const int ships)
 {
     // TODO: FIX MEMORY LEAK IN THIS FUNCTION
 

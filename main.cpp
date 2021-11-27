@@ -20,4 +20,5 @@ int main() {
     }
 
     destroy_board(board, height);
+    free(c);
 }
