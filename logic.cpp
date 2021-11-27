@@ -101,9 +101,11 @@ bool contains(std::vector<Coordinates> c_list, Coordinates c)
 }
 
 void r_guess(bool **board, const Coordinates g, const int height, const int width,
-            Coordinates* &found, int &count, std::vector<Coordinates> &visited)
+             Coordinates* &found, int &count, std::vector<Coordinates> &visited,
+             int &guesses)
 {
     std::cout << "\t";
+    guesses++;
 
     switch(guess(board, g, height, width)) {
         case ResponseType::HIT:
@@ -120,7 +122,7 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
                 if (contains(visited, adj[i])) { continue; }
                 else {
                     visited.push_back(adj[i]);     // add current location to places seen
-                    return r_guess(board, adj[i], height, width, found, count, visited);
+                    return r_guess(board, adj[i], height, width, found, count, visited, guesses);
                 }
             }
 
@@ -146,23 +148,8 @@ Coordinates* find_ships(bool **board, const int width, const int height, const i
         if (contains(visited, g)) { continue; }
         else { visited.push_back(g); }
 
-        r_guess(board, g, height, width, found, count, visited);
+        r_guess(board, g, height, width, found, count, visited, guesses);
         std::cout << std::endl;
-
-        /*
-        switch(guess(board, g, height, width)) {
-            case ResponseType::HIT:
-                found[count] = g;
-                count++;
-                break;
-            case ResponseType::MISS:
-                break;
-            case ResponseType::NEAR_MISS:
-                break;
-        }
-        */
-
-        guesses++;
     }
 
     std::cout << to_string(guesses) + " guesses needed" << std::endl;
