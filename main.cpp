@@ -13,12 +13,11 @@ int main() {
     place_ships(board, ships, height, width);
     print_board(board, height, width);
     Coordinates* c = find_ships(board, height, width, ships);
-		
-		for (int i = 0; i < ship_count; i++) {
-        std::cout << c[i].x;
-        std::cout << ":";
-        std::cout << c[i].y << std::endl;
-			}
+
+    std::cout << std::endl;
+    for (int i = 0; i < ships; i++) {
+        std::cout << c[i].x << ":" << c[i].y << std::endl;
+    }
 
     destroy_board(board, height);
 }
