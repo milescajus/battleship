@@ -144,8 +144,6 @@ void r_guess(bool **board, const Coordinates g, const int height, const int widt
 
 Coordinates *find_ships(bool **board, const int width, const int height, const int ships)
 {
-    // TODO: FIX MEMORY LEAK IN THIS FUNCTION
-
     std::vector<Coordinates> visited;   // keeps track of visited coords
     Coordinates *found = (Coordinates *)malloc(sizeof(Coordinates) * ships);
 
